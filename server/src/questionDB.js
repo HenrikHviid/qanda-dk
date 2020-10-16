@@ -1,9 +1,9 @@
 module.exports = (mongoose) => {
   const questionSchema = new mongoose.Schema({
-    question: String,
-    description: string,
-    answer: object,
-    score: number,
+    headline: String,
+    description: String,
+    answer: [{ text: String, score: Number }],
+    score: Number,
   });
 
   const questionModel = mongoose.model('question', questionSchema);
@@ -26,8 +26,13 @@ module.exports = (mongoose) => {
     }
   }
 
-  async function createQuestion(text) {
-    let question = new questionModel({ name: text });
+  async function createQuestion(headline, description) {
+    let question = new questionModel({
+      headline: headline,
+      description: description,
+      answer: [],
+      score: 0,
+    });
     return question.save();
   }
 
