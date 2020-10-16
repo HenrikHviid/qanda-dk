@@ -3,7 +3,6 @@ module.exports = (mongoose) => {
     headline: String,
     description: String,
     answer: [{ text: String, score: Number }],
-    score: Number,
   });
 
   const questionModel = mongoose.model('question', questionSchema);
