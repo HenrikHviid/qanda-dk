@@ -14,8 +14,16 @@ module.exports = (questionDB) => {
   });
 
   router.post('/', async (req, res) => {
-    // TODO: Implement!
-    res.json({ msg: 'Not implemented :(' });
+    let headline = new headline(req.body);
+    let description = new description(req.body);
+    const q = await questionDB.createQuestion(headline, description);
+    q.save();
+    .then( q => {
+      res.status(200).send{('Question added succesfully')};
+    })
+    .catch( error => {
+      res.status(400).send{('Error question could not be added')}
+    })
   });
 
   return router;
