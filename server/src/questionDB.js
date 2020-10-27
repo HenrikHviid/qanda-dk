@@ -2,7 +2,7 @@ module.exports = (mongoose) => {
   const questionSchema = new mongoose.Schema({
     headline: String,
     description: String,
-    answer: [{ text: String, score: Number }],
+    answers: [{ text: String, score: Number }],
   });
 
   const questionModel = mongoose.model('question', questionSchema);
@@ -29,7 +29,7 @@ module.exports = (mongoose) => {
     let question = new questionModel({
       headline: headline,
       description: description,
-      answer: [],
+      answers: [],
       score: 0,
     });
     return question.save();
@@ -42,7 +42,10 @@ module.exports = (mongoose) => {
     if (l === 0) {
       let promises = [];
       for (let i = 0; i < count; i++) {
-        let newQuestion = new questionModel({ name: `Question number ${i}` });
+        let newQuestion = new questionModel({
+          headline: `Question number ${i}`,
+          description: `test description`,
+        });
         promises.push(newQuestion.save());
       }
       return Promise.all(promises);

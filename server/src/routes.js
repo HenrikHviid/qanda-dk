@@ -14,16 +14,14 @@ module.exports = (questionDB) => {
   });
 
   router.post('/', async (req, res) => {
-    let headline = new headline(req.body);
-    let description = new description(req.body);
+    let headline = req.body.headline;
+    let description = req.body.description;
     const q = await questionDB.createQuestion(headline, description);
-    q.save();
-    .then( q => {
-      res.status(200).send{('Question added succesfully')};
-    })
-    .catch( error => {
-      res.status(400).send{('Error question could not be added')}
-    })
+    if (q) {
+      res.send('Question added succesfully');
+    } else {
+      res.send('Error question could not be added');
+    }
   });
 
   return router;
