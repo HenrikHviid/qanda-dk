@@ -48,9 +48,12 @@ function Question(props) {
       <ul>
         {qAnswers.map((e) => (
           <li key={e._id}>
-            {e.text}
-            {e.score}
-            <button onClick={() => props.incrScore(id, e._id)}>Like</button>
+            <p>
+              {e.text}{' '}
+              <button onClick={() => props.incrScore(id, e._id)}>Like</button>
+            </p>
+            <p>Score: {e.score}</p>
+            <br></br>
           </li>
         ))}
       </ul>
