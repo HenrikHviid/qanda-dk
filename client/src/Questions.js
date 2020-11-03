@@ -12,7 +12,7 @@ function Questions(props) {
     </Link>
   );
 
-  const list = [];
+  let list = [];
   list = questions.map(mapFunction);
 
   return (
