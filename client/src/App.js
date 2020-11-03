@@ -7,7 +7,7 @@ import Question from './Question';
 const API_URL = process.env.REACT_APP_API || 'http://localhost:8080/api';
 
 function App() {
-  const [questions, setQuestions] = useState(0);
+  const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
     async function fetchData() {

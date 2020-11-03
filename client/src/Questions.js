@@ -12,8 +12,7 @@ function Questions(props) {
     </Link>
   );
 
-  let list = [];
-  list = questions.map(mapFunction);
+  const list = questions.map(mapFunction);
 
   return (
     <>
