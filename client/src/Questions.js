@@ -5,12 +5,9 @@ import AddQuestion from './AddQuestion';
 
 function Questions(props) {
   let questions = props.questions;
-  const filter = props.filter;
-
-  console.log('filter', filter);
 
   const mapFunction = (element) => (
-    <Link to={`/question/${element.id}`} key={element.id}>
+    <Link to={`/question/${element._id}`} key={element._id}>
       <li>{element.headline}</li>
     </Link>
   );
@@ -19,9 +16,8 @@ function Questions(props) {
 
   return (
     <>
-      <AddQuestion></AddQuestion>
+      <AddQuestion addQuestion={props.addQuestion}></AddQuestion>
       <h2>Questions</h2>
-
       <ul>{list}</ul>
     </>
   );

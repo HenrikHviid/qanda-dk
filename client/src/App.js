@@ -2,43 +2,65 @@ import React, { useState, useEffect } from 'react';
 import { Router } from '@reach/router';
 
 import Questions from './Questions';
+import Question from './Question';
 
 const API_URL = process.env.REACT_APP_API || 'http://localhost:8080/api';
 
 function App() {
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState(0);
 
   useEffect(() => {
     async function fetchData() {
       const url = `${API_URL}/questions`;
       const response = await fetch(url);
-      const question = await response.json();
-      setQuestions(question);
+      const data = await response.json();
+      setQuestions(data);
     }
     fetchData();
   }, []);
 
-  function getQuestion(id) {
-    const question = questions.find((element) => element.id === parseInt(id));
-    return question;
+  async function getQuestion(id) {
+    const url = `${API_URL}/question/${id}`;
+    const response = await fetch(url);
+    const questionObject = await response.json();
+    return questionObject;
   }
 
-  async function addQuestion(headline, description) {
-    const newQuestion = {
-      headline: headline,
-      description: description,
-    };
-
-    const url = 'API_URL';
-    const response = await fetch(url, {
+  function addQuestion(headline, description) {
+    fetch(`${API_URL}/questions`, {
       method: 'POST',
       headers: {
-        'content-Type': 'application/json',
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newQuestion),
+      body: JSON.stringify({
+        headline: headline,
+        description: description,
+      }),
     });
-    const question = await response.json();
-    console.log(question);
+  }
+
+  function addAnswer(answerText, id) {
+    fetch(`${API_URL}/question/${id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        answerText: answerText,
+      }),
+    });
+  }
+
+  function incrScore(qId, aId) {
+    const url = `${API_URL}/question/increase/${qId}/${aId}`;
+    console.log('incrScore');
+    fetch(url, {
+      method: 'POST',
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('succes' + data);
+      });
   }
 
   return (
@@ -46,6 +68,12 @@ function App() {
       <h1>Qanda App!</h1>
       <Router>
         <Questions path='/' questions={questions} addQuestion={addQuestion} />
+        <Question
+          path='/question/:id'
+          getQuestion={getQuestion}
+          addAnswer={addAnswer}
+          incrScore={incrScore}
+        />
       </Router>
     </>
   );

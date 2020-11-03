@@ -30,9 +30,26 @@ module.exports = (mongoose) => {
       headline: headline,
       description: description,
       answers: [],
-      score: 0,
     });
     return question.save();
+  }
+
+  async function createAnswer(id, answerText) {
+    console.log('id:' + id + answerText);
+    let obj = { text: answerText, score: 0 };
+    return await questionModel.findOneAndUpdate(
+      { _id: id },
+      { $push: { answers: obj } }
+    );
+  }
+
+  async function incrScore(qId, aId) {
+    console.log('qId: ' + qId + 'aId: ' + aId);
+    return await questionModel.update(
+      { _id: qId, 'answers._id': aId },
+      { $inc: { 'answers.$.score': 1 } },
+      { new: true }
+    );
   }
 
   async function bootstrap(count = 10) {
@@ -45,6 +62,7 @@ module.exports = (mongoose) => {
         let newQuestion = new questionModel({
           headline: `Question number ${i}`,
           description: `test description`,
+          answers: [],
         });
         promises.push(newQuestion.save());
       }
@@ -57,5 +75,7 @@ module.exports = (mongoose) => {
     getQuestion,
     createQuestion,
     bootstrap,
+    createAnswer,
+    incrScore,
   };
 };
