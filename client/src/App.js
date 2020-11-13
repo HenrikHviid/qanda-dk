@@ -8,6 +8,7 @@ const API_URL = process.env.REACT_APP_API || 'http://localhost:8080/api';
 
 function App() {
   const [questions, setQuestions] = useState([]);
+  const [postCount, setPostCount] = useState(0);
 
   useEffect(() => {
     async function fetchData() {
@@ -17,7 +18,8 @@ function App() {
       setQuestions(data);
     }
     fetchData();
-  }, []);
+    //console.log('test');
+  }, [postCount]);
 
   async function getQuestion(id) {
     const url = `${API_URL}/question/${id}`;
@@ -49,6 +51,7 @@ function App() {
         answerText: answerText,
       }),
     });
+    setPostCount(postCount + 1);
   }
 
   function incrScore(qId, aId) {
@@ -61,6 +64,7 @@ function App() {
       .then((data) => {
         console.log('succes' + data);
       });
+    setPostCount(postCount + 1);
   }
 
   return (
